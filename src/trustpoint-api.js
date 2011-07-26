@@ -180,7 +180,13 @@ Trustpoint.prototype.do_xml_req = function(args) {
 	    operator = args.operator,
 	    dataset = args.dataset || [],
 	    _dataset_date_keywords = ['billdate', 'paydate', 'noticedate'],
-	    _dataset_keywords = ['custnum', 'billnum', 'billcode', 'name', 'address', 'postcode', 'city', 'customaddress', 'customertype', 'jobtype', 'govid', 'amount', 'operator'],
+	    _dataset_keywords = ['accountid', 'addaddress', 'addressaddline1', 'addressaddline', 'addresscountry', 
+	                         'attachment', 'custnum', 'billnum', 'billcode', 'name', 'address', 'postcode', 
+	                         'city', 'customaddress', 'customertype', 'jobtype', 'govid', 'amount', 'operator', 
+	                         'cashbill', 'checkbillnum', 'company', 'contry', 'email', 'email2', 'evoice',
+	                         'evoiceint', 'freetext', 'language', 'ordernumber', 'ourcode', 'overdueinterest', 
+	                         'ownref', 'person', 'phone', 'refundtobillnum', 'refundtojobid', 'salesman',
+	                         'salesmanname', 'sendtype', 'sensible', 'servicecode', 'vatid', 'yourcode'],
 	    _required_dataset_keys = ['name', 'address', 'postcode', 'city', 'customertype', 'jobtype', 'amount'],
 	    xml = '';
 	
