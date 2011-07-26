@@ -30,19 +30,12 @@ function Trustpoint(cid, apicode) {
 	var undefined, trust = this;
 	trust.cid = cid;
 	trust.apicode = apicode;
-	trust.transferkey = undefined;
 }
 
 /* Get transfer key */
 Trustpoint.prototype.requirekey = function(cid, apicode, callback) {
 	console.log("Trustpoint.prototype.requirekey(" + sys.inspect(cid) + ", " + sys.inspect(apicode) + ", " + sys.inspect(callback) + ")");
 	var trust = this;
-	
-	// Use cached transferkey if it exists
-	if(trust.transferkey) {
-		callback(undefined, trust.transferkey);
-		return trust;
-	}
 	
 	// Get fresh transferkey from Trustpoint
 	var undefined,
@@ -62,7 +55,6 @@ Trustpoint.prototype.requirekey = function(cid, apicode, callback) {
 				transferkey += d;
 			});
 			res.on('end', function() {
-				trust.transferkey = transferkey;
 				callback(undefined, transferkey);
 			});
 		});
@@ -75,15 +67,35 @@ Trustpoint.prototype.requirekey = function(cid, apicode, callback) {
 };
 
 /* Commit transfer */
-Trustpoint.prototype.committransfer = function(callback) {
-	console.log("Trustpoint.prototype.committransfer(" + sys.inspect(callback) + ")");
+Trustpoint.prototype.committransfer = function(data, callback) {
 	
-	var trust = this;
+	/* */
+	function do_parse_xml_response(xml_data, callback) {
+		var undefined,
+		    sys = require('sys'),
+			fs = require('fs'),
+			xml2js = require('xml2js');
+		    parser = new xml2js.Parser();
+		
+		parser.addListener('end', function(result) {
+			console.log(sys.inspect(result));
+			callback(result.commonerror, result.row instanceof Array ? result.row : [result.row] );
+		});
+		
+		parser.parseString(xml_data);
+	}
+	
+	console.log("Trustpoint.prototype.committransfer(" + sys.inspect(callback) + ")");
+	var trust = this,
+	    data = data || {};
 	trust.requirekey(trust.cid, trust.apicode, function(err, transferkey) {
 		if(err) throw new Error("Error: " + err);
 		console.log("transferkey: " + transferkey + "\n");
 		
+		data.transferkey = transferkey;
+		
 		var undefined,
+			xml_data = trust.do_xml_req(data),
 		    https = require('https'),
 			results = '',
 		    options = {
@@ -91,7 +103,7 @@ Trustpoint.prototype.committransfer = function(callback) {
 				port: 443,
 				path: '/API/committransfer.php',
 				method: 'POST',
-				headers: {'Content-Type': 'application/xml'}
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 				},
 		    req = https.request(options, function(res) { // Handles response
 				console.log("statusCode: ", res.statusCode);
@@ -100,14 +112,21 @@ Trustpoint.prototype.committransfer = function(callback) {
 					results += d;
 				});
 				res.on('end', function() {
-					callback(undefined, transferkey);
+					console.log(results);
+					do_parse_xml_response(results, function(commonerror, rows) {
+						//if(rows) console.log(sys.inspect(rows));
+						if(commonerror) throw new Error(commonerror);
+					});
+					callback(undefined);
 				});
 			});
 		
-		req.end('');
+		console.log("xml data = " + xml_data);
+		
+		req.end('datastream='+encodeURIComponent(xml_data)+'&key='+encodeURIComponent(transferkey));
 		
 		req.on('error', function(e) {
-			callback("Getting transferkey failed: " + e);
+			callback("Trustpoint.prototype.committransfer failed: " + e);
 		});
 	});
 	return trust;
@@ -144,8 +163,8 @@ Trustpoint.prototype.do_xml_req = function(args) {
 	
 	// Create XML data
 	xml += '<datastream>\n';
-	xml += ' <transferkey>'+escape_xml(transferkey)+'</transferkey>\n';
 	if(debug) xml += ' <debug>true</debug>\n';
+	xml += ' <transferkey>'+escape_xml(transferkey)+'</transferkey>\n';
 	if(operator) xml += ' <operator>'+escape_xml(operator)+'</operator>\n';
 	foreach(dataset).do(function(data) {
 		if(!data) throw new Error("No data");
@@ -191,7 +210,7 @@ Trustpoint.prototype.do_xml_req = function(args) {
 		});
 		xml += ' </dataset>\n';
 	});
-	xml += '</datastream>';
+	xml += '</datastream>\n';
 	return xml;
 };
 
@@ -199,8 +218,7 @@ Trustpoint.prototype.do_xml_req = function(args) {
 (function() {
 	var config = require('./config.js'),
 	    trust = new Trustpoint(config.cid, config.apicode),
-	    data = {'transferkey':'test',
-			'debug':true,
+	    data = {'debug':true,
 			'operator':12345,
 			'dataset':[{'custnum':227,
 				'billnum':1224,
@@ -219,6 +237,8 @@ Trustpoint.prototype.do_xml_req = function(args) {
 	
 	console.log("data = " + sys.inspect(data) + "\n");
 	
-	console.log(trust.do_xml_req(data));
+	trust.committransfer(data, function(err) {
+		if(err) throw new Error(err);
+	});
 	
 })();
