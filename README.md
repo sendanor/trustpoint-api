@@ -4,6 +4,16 @@ Trustpoint API client module for Node.js
 
 This is a client module for [Trustpoint API](https://www.trustpoint.fi).
 
+Authors
+-------
+
+* [Jaakko-Heikki Heusala <jheusala@iki.fi>](http://www.jhh.me)
+
+License
+-------
+
+MIT-style license, see [INSTALL.txt](http://github.com/jheusala/trustpoint-api/blob/master/LICENSE.txt).
+
 Required software
 -----------------
 
