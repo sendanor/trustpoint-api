@@ -1,14 +1,17 @@
 
-== Trustpoint API client module for Node.js ==
+Trustpoint API client module for Node.js
+========================================
 
 This is a client module for [Trustpoint API](https://www.trustpoint.fi).
 
-=== Required software ===
+Required software
+-----------------
 
 * [Node.js](http://www.nodejs.org)
 * [xml2js](http://github.com/Leonidas-from-XIV/node-xml2js/)
 
-=== Example ===
+Example Code
+------------
 
 	var config = require('./config.js'),
 	    trust = require('trustpoint-api');
