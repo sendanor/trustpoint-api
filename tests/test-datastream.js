@@ -29,11 +29,18 @@ function get_transferkey(cid, apicode, callback) {
 	});
 }
 
+/* Insert invoice */
+function insert_invoice(cid, apicode, callback) {
+	get_transferkey(config.cid, config.apicode, function(err, transferkey) {
+		if(err) throw new Error("Error: " + err);
+		console.log("received transferkey: " + transferkey + "\n");
+		
+		
+	});
+}
+
 // Main
 (function() {
 	var config = require('./config.js');
-	get_transferkey(config.cid, config.apicode, function(err, transferkey) {
-		if(err) throw new Error("Error: " + err);
-		process.stdout.write("received transferkey: " + transferkey + "\n");
-	});
+	
 })();

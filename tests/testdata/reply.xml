@@ -1,0 +1,12 @@
+<result> 
+ <commonerror>Yleinen virhe. Mikäli ilmenee, ei aineisto mene läpi</commonerror> 
+ <row> 
+  <billnum>12345</billnum> 
+  <accepted>1</accepted> 
+ </row> 
+ <row> 
+  <billnum>12346</billnum> 
+  <accepted>0</accepted> 
+  <error>Virheviesti</error> 
+ </row> 
+</result>
