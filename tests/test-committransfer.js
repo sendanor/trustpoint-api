@@ -109,12 +109,7 @@ Trustpoint.prototype.committransfer = function(callback) {
 }
 
 /* Get XML message from a JSON string */
-Trustpoint._xml_req = function(args) {
-	
-	var _dataset_date_keywords = ['billdate', 'paydate', 'noticedate'];
-	var _dataset_keywords = ['custnum', 'billnum', 'billcode', 'name', 'address', 'postcode', 'city', 'customaddress', 'customertype', 'jobtype', 'govid', 'amount', 'operator'];
-
-	var _required_dataset_keys = ['name', 'address', 'postcode', 'city', 'customertype', 'jobtype', 'amount'];
+Trustpoint.prototype._xml_req = function(args) {
 	
 	/* Escape string for XML */
 	function escape_xml (str) {
@@ -131,6 +126,9 @@ Trustpoint._xml_req = function(args) {
 	    transferkey = args.transferkey,
 	    operator = args.operator,
 	    dataset = args.dataset || [],
+	    _dataset_date_keywords = ['billdate', 'paydate', 'noticedate'],
+	    _dataset_keywords = ['custnum', 'billnum', 'billcode', 'name', 'address', 'postcode', 'city', 'customaddress', 'customertype', 'jobtype', 'govid', 'amount', 'operator'],
+	    _required_dataset_keys = ['name', 'address', 'postcode', 'city', 'customertype', 'jobtype', 'amount'],
 	    xml = '';
 	
 	// Check keys
@@ -214,5 +212,6 @@ Trustpoint._xml_req = function(args) {
 				'noticedate':'2009-11-29',
 				'amount':1250.50,
 			}
-		]});
+		],
+	}));
 })();
