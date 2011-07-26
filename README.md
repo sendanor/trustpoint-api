@@ -7,7 +7,7 @@ This is a client module for [Trustpoint API](https://www.trustpoint.fi).
 Authors
 -------
 
-* [Jaakko-Heikki Heusala <jheusala@iki.fi>](http://www.jhh.me)
+* Jaakko-Heikki Heusala <jheusala@iki.fi>, [www.jhh.me](http://www.jhh.me)
 
 License
 -------
