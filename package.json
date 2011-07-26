@@ -1,0 +1,22 @@
+{
+  "name": "trustpoint-api",
+  "description": "Trustpoint API client module",
+  "version": "0.0.20110726",
+  "homepage": "https://github.com/jheusala/trustpoint-api",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jheusala/trustpoint-api.git"
+  },
+  "author": "Jaakko-Heikki Heusala <jheusala@iki.fi> (http://www.jhh.me)",
+  "main": "./src/trustpoint-api.js",
+  "directories": {
+    "lib": "src"
+  },
+  "engines": {
+    "node": "*"
+  },
+  "dependencies": {
+    "xml2js" : ">=0.1.9"
+  },
+  "devDependencies": {}
+}
