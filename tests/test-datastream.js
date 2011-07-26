@@ -133,16 +133,39 @@ Trustpoint._xml_req = function(args) {
 	    dataset = args.dataset || [],
 	    xml = '';
 	
-	if(!transferkey) throw new Error("No transferkey!");
+	// Check keys
+	if(!transferkey) throw new Error("No key: transferkey");
 	
+	// Create XML data
 	xml += '<datastream>\n';
 	xml += ' <transferkey>'+escape_xml(transferkey)+'</transferkey>\n';
 	if(debug) xml += ' <debug>true</debug>\n';
 	if(operator) xml += ' <operator>'+escape_xml(operator)+'</operator>\n';
 	foreach(operator.dataset).do(function(data) {
+		
+		// Check required keywords
+		foreach(_required_dataset_keys).do(function(key) {
+			if(!data[key]) throw new Error("Missing key: " + key);
+		});
+		
+		// Check special values
+		function check_1_2(key) {
+			var tmp = ""+data[key];
+			if( (tmp === "1") || (tmp === "2") ) return;
+			throw new Error("key invalid: " + key + ": " + tmp);
+		};
+		
+		check_1_2(data['customertype']);
+		check_1_2(data['jobtype']);
+		
+		if ( (""+data['jobtype'] === "2") && (!data['noticedate']) ) throw new Error("Missing key: noticedate");
+		
+		// FIXME: Check validity for customaddress
+		
+		// Write XML dataset
 		xml += ' <dataset>\n';
 		foreach(_dataset_keywords).do(function(key) {
-			if(dataset[key]) xml += '  <'+key+'>'+escape_xml(dataset[key])+'</'+key+'>\n';
+			if(data[key]) xml += '  <'+key+'>'+escape_xml(data[key])+'</'+key+'>\n';
 		});
 		foreach(_dataset_date_keywords).do(function(key) {
 			function format(value) {
@@ -156,8 +179,8 @@ Trustpoint._xml_req = function(args) {
 				}
 				throw new Error("date value invalid: " + value);
 			}
-			if(!dataset[key]) return;
-			xml += '  <'+key+'>'+escape_xml(format(dataset[key]))+'</'+key+'>\n';
+			if(!data[key]) return;
+			xml += '  <'+key+'>'+escape_xml(format(data[key]))+'</'+key+'>\n';
 		});
 		xml += ' </dataset>\n';
 	});
