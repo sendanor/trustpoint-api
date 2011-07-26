@@ -1,3 +1,4 @@
+var sys = require('sys');
 
 /* Foreach every element in array, object or the element itself if neither */
 function foreach(values) {
@@ -24,6 +25,7 @@ function foreach(values) {
 
 /* Constructor */
 function Trustpoint(cid, apicode) {
+	console.log("Trustpoint(" + sys.inspect(cid) + ", " + sys.inspect(apicode) + ")");
 	if(!(this instanceof arguments.callee)) return new (arguments.callee)(args);
 	var undefined, trust = this;
 	trust.cid = cid;
@@ -33,6 +35,7 @@ function Trustpoint(cid, apicode) {
 
 /* Get transfer key */
 Trustpoint.prototype.requirekey = function(cid, apicode, callback) {
+	console.log("Trustpoint.prototype.requirekey(" + sys.inspect(cid) + ", " + sys.inspect(apicode) + ", " + sys.inspect(callback) + ")");
 	var trust = this;
 	
 	// Use cached transferkey if it exists
@@ -69,10 +72,12 @@ Trustpoint.prototype.requirekey = function(cid, apicode, callback) {
 	req.on('error', function(e) {
 		callback("Getting transferkey failed: " + e);
 	});
-}
+};
 
 /* Commit transfer */
 Trustpoint.prototype.committransfer = function(callback) {
+	console.log("Trustpoint.prototype.committransfer(" + sys.inspect(callback) + ")");
+	
 	var trust = this;
 	trust.requirekey(trust.cid, trust.apicode, function(err, transferkey) {
 		if(err) throw new Error("Error: " + err);
@@ -106,10 +111,12 @@ Trustpoint.prototype.committransfer = function(callback) {
 		});
 	});
 	return trust;
-}
+};
 
 /* Get XML message from a JSON string */
-Trustpoint.prototype._xml_req = function(args) {
+Trustpoint.prototype.do_xml_req = function(args) {
+	
+	console.log("Trustpoint.prototype.do_xml_req(" + sys.inspect(args) + ")");
 	
 	/* Escape string for XML */
 	function escape_xml (str) {
@@ -184,20 +191,16 @@ Trustpoint.prototype._xml_req = function(args) {
 	});
 	xml += '</datastream>';
 	return xml;
-}
-
+};
 
 // Main
 (function() {
-	var config = require('./config.js');
-	var trust = new Trustpoint(config.cid, config.apicode);
-	console.log(trust._xml_req({
-		'transferkey':'test',
-		'debug':true,
-		'operator':12345,
-		'dataset':[
-			{
-				'custnum':227,
+	var config = require('./config.js'),
+	    trust = new Trustpoint(config.cid, config.apicode),
+	    data = {'transferkey':'test',
+			'debug':true,
+			'operator':12345,
+			'dataset':[{'custnum':227,
 				'billnum':1224,
 				'billcode':'2270012240',
 				'name':'Teemu Testi',
@@ -210,8 +213,10 @@ Trustpoint.prototype._xml_req = function(args) {
 				'billdate':'2009-11-01',
 				'paydate':'2009-11-15',
 				'noticedate':'2009-11-29',
-				'amount':1250.50,
-			}
-		],
-	}));
+				'amount':1250.50 }] };
+	
+	console.log("data = " + sys.inspect(data));
+	
+	//console.log(trust.do_xml_req(data));
+	
 })();
