@@ -1,5 +1,5 @@
 var config = require('./config.js'),
-    trust = require('../src/trustpoint-api.js');
+    trust = require('trustpoint-api');
 
 var api = trust.create(config.cid, config.apicode);
 
