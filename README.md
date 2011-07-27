@@ -2,7 +2,19 @@
 Trustpoint API client module for Node.js
 ========================================
 
+Description
+-----------
 This is a client module for [Trustpoint API](https://www.trustpoint.fi).
+
+Installation
+------------
+
+Simplest way to install is to use [npm](http://npmjs.org/):
+
+   npm install xml2js
+   npm install /path/to/trustpoint-api
+
+(FIXME: Why xml2js did not install automatically?)
 
 License
 -------
