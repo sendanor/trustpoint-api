@@ -186,7 +186,8 @@ Trustpoint.prototype.do_xml_req = function(args) {
 	                         'cashbill', 'checkbillnum', 'company', 'contry', 'email', 'email2', 'evoice',
 	                         'evoiceint', 'freetext', 'language', 'ordernumber', 'ourcode', 'overdueinterest', 
 	                         'ownref', 'person', 'phone', 'refundtobillnum', 'refundtojobid', 'salesman',
-	                         'salesmanname', 'sendtype', 'sensible', 'servicecode', 'vatid', 'yourcode'],
+	                         'salesmanname', 'sendtype', 'sensible', 'servicecode', 'vatid', 'yourcode', 
+	                         'claimtext'],
 	    _required_dataset_keys = ['name', 'address', 'postcode', 'city', 'customertype', 'jobtype', 'amount'],
 	    xml = '';
 	
