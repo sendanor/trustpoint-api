@@ -1,7 +1,7 @@
 {
   "name": "trustpoint-api",
   "description": "Trustpoint API client module",
-  "version": "0.0.20110726",
+  "version": "0.0.20110727",
   "homepage": "https://github.com/jheusala/trustpoint-api",
   "repository": {
     "type": "git",

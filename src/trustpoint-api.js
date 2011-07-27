@@ -1,7 +1,7 @@
 /* 
  * Trustpoint API client module for Node.js
  * https://github.com/jheusala/trustpoint-api
- * Version 0.0.20110726
+ * Version 0.0.20110727
  */
 
 /*
