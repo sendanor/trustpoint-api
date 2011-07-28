@@ -28,31 +28,9 @@
 
 var sys = require('sys'),
     https = require('https'),
-	fs = require('fs'),
-	xml2js = require('xml2js');
-
-/* Foreach every element in an array, object or the element itself if neither */
-function foreach(values) {
-
-    if(!values) return do_single();
-    if(typeof values != 'object') return do_single();
-    if(values instanceof Array) return do_array();
-    return do_obj();
-
-    function do_single() {
-        return {'do': function(f) { f(values);}};
-    }
-
-    function do_array() {
-        var i=0, length=values.length;
-        return {'do': function(f) { for(; i<length; ++i) f(values[i], i); }};
-    }
-
-    function do_obj() {
-        var i;
-        return {'do': function(f) { for(i in values) if(values.hasOwnProperty(i)) f(values[i], i); }};
-    }
-}
+    fs = require('fs'),
+    xml2js = require('xml2js'),
+    foreach = require('snippets').foreach;
 
 /* Constructor */
 function Trustpoint(cid, apicode) {
